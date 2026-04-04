@@ -1,0 +1,103 @@
+package edu.pucmm.icc352.proyectofinalweb.model;
+
+import java.time.LocalDateTime;
+
+public class Formulario {
+    private String id;
+    private String nombre;
+    private String sector;
+    private String nivelEscolar;
+    private String usuario;
+    private double latitud;
+    private double longitud;
+    private String fotoBase64;
+    private LocalDateTime fechaRegistro;
+
+    public Formulario() {
+    }
+
+    public Formulario(String id, String nombre, String sector, String nivelEscolar, String usuario,
+                      double latitud, double longitud, String fotoBase64, LocalDateTime fechaRegistro) {
+        this.id = id;
+        this.nombre = nombre;
+        this.sector = sector;
+        this.nivelEscolar = nivelEscolar;
+        this.usuario = usuario;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.fotoBase64 = fotoBase64;
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public String getNivelEscolar() {
+        return nivelEscolar;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public String getFotoBase64() {
+        return fotoBase64;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public void setNivelEscolar(String nivelEscolar) {
+        this.nivelEscolar = nivelEscolar;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public void setFotoBase64(String fotoBase64) {
+        this.fotoBase64 = fotoBase64;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+}
