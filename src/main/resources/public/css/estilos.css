@@ -1,0 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6fb;
+    color: #1f2937;
+}
+
+.pagina-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #153b7a, #2b66c7);
+}
+
+.contenedor-login {
+    width: 100%;
+    max-width: 450px;
+}
+
+.tarjeta {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    margin-bottom: 24px;
+}
+
+.encabezado-login {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo-principal {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 8px;
+}
+
+.barra-superior {
+    background: #153b7a;
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.barra-superior h1,
+.tarjeta h2 {
+    margin: 0 0 10px 0;
+}
+
+.contenedor-principal {
+    padding: 24px;
+}
+
+.dos-columnas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.formulario-simple {
+    display: grid;
+    gap: 10px;
+}
+
+input,
+select,
+button {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.boton {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
+.boton-principal {
+    background: #1d4ed8;
+}
+
+.boton-secundario {
+    background: #475569;
+}
+
+.boton-exito {
+    background: #0f766e;
+}
+
+.boton-peligro {
+    background: #b91c1c;
+}
+
+.fila-botones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.mensaje {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #e2e8f0;
+    min-height: 45px;
+}
+
+.nota-login,
+.estado-conexion {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #eff6ff;
+}
+
+.tabla-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+}
+
+#mapaLeaflet {
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+}
+
+.imagen-mini {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+    .barra-superior {
+        padding: 16px;
+    }
+
+    .contenedor-principal {
+        padding: 16px;
+    }
+
+    .fila-botones {
+        flex-direction: column;
+    }
+}

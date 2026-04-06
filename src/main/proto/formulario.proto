@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "edu.pucmm.icc352.proyectofinalweb.generated";
+option java_outer_classname = "FormularioProto";
+
+service FormularioGrpcService {
+  rpc ListarPorUsuario (ListarPorUsuarioRequest) returns (ListaFormulariosResponse);
+  rpc CrearFormulario (CrearFormularioRequest) returns (FormularioResponse);
+}
+
+message ListarPorUsuarioRequest {
+  string token = 1;
+}
+
+message CrearFormularioRequest {
+  string token = 1;
+  string nombre = 2;
+  string sector = 3;
+  string nivelEscolar = 4;
+  double latitud = 5;
+  double longitud = 6;
+  string fotoBase64 = 7;
+}
+
+message FormularioItem {
+  string id = 1;
+  string nombre = 2;
+  string sector = 3;
+  string nivelEscolar = 4;
+  string usuario = 5;
+  double latitud = 6;
+  double longitud = 7;
+  string fechaRegistro = 8;
+}
+
+message ListaFormulariosResponse {
+  bool ok = 1;
+  string mensaje = 2;
+  repeated FormularioItem formularios = 3;
+}
+
+message FormularioResponse {
+  bool ok = 1;
+  string mensaje = 2;
+  string id = 3;
+}
