@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Admin</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<header class="barra-superior">
+    <div>
+        <h1>Administración</h1>
+        <p>Usuario: <strong th:text="${username}">admin</strong></p>
+    </div>
+    <nav>
+        <a href="/dashboard" class="boton boton-secundario">Panel</a>
+        <a href="/mapa" class="boton boton-secundario">Mapa</a>
+        <a href="/logout" class="boton boton-peligro">Salir</a>
+    </nav>
+</header>
+
+<main class="contenedor-principal dos-columnas">
+    <section class="tarjeta">
+        <h2>Crear usuario</h2>
+        <form method="post" action="/admin/usuarios" class="formulario-simple">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Clave</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol">
+                <option value="ENCUESTADOR">ENCUESTADOR</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
+
+            <button type="submit" class="boton boton-principal">Guardar usuario</button>
+        </form>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Usuarios</h2>
+        <div class="tabla-responsive">
+            <table>
+                <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.username}">usuario</td>
+                    <td th:text="${usuario.rol}">rol</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<main class="contenedor-principal">
+    <section class="tarjeta">
+        <h2>Formularios recibidos</h2>
+        <div class="tabla-responsive">
+            <table>
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Sector</th>
+                    <th>Nivel</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="f : ${formularios}">
+                    <td th:text="${f.nombre}">Nombre</td>
+                    <td th:text="${f.sector}">Sector</td>
+                    <td th:text="${f.nivelEscolar}">Nivel</td>
+                    <td th:text="${f.usuario}">Usuario</td>
+                    <td th:text="${f.fechaRegistro}">Fecha</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>
