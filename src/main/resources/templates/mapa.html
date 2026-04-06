@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${titulo}">Mapa</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<header class="barra-superior">
+  <div>
+    <h1>Mapa de registros</h1>
+    <p>Usuario: <strong th:text="${username}">usuario</strong></p>
+  </div>
+  <nav>
+    <a href="/dashboard" class="boton boton-secundario">Panel</a>
+    <a href="/logout" class="boton boton-peligro">Salir</a>
+  </nav>
+</header>
+
+<main class="contenedor-principal">
+  <section class="tarjeta">
+    <h2>Ubicaciones de formularios</h2>
+    <div id="mapaLeaflet"></div>
+  </section>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/js/mapa.js"></script>
+</body>
+</html>
