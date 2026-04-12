@@ -12,7 +12,7 @@ RUN gradle dependencies --no-daemon || true
 # Copiar el resto del código fuente
 COPY src/ src/
 
-# Generar la distribución ejecutable (JAR + dependencias + scripts de arranque)
+# Generar la distribución ejecutable
 RUN gradle installDist --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine
@@ -25,7 +25,7 @@ COPY --from=build /app/build/install/Proyecto_FinalWeb/ .
 # Exponer puertos HTTP y gRPC
 EXPOSE 7000 50051
 
-# Variables de entorno con valores por defecto (se sobreescriben en docker-compose)
+
 ENV APP_PORT=7000 \
     GRPC_PORT=50051 \
     MONGO_URL=mongodb://mongo:27017 \
