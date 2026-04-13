@@ -32,7 +32,7 @@ dependencies {
     implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
     implementation "org.mongodb:mongodb-driver-sync:${mongoVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-
+    implementation 'dev.morphia.morphia:morphia-core:2.4.14'
     implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
@@ -71,16 +71,7 @@ protobuf {
     }
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs += [
-                    "build/generated/sources/proto/main/java",
-                    "build/generated/sources/proto/main/grpc"
-            ]
-        }
-    }
-}
+compileJava.dependsOn('generateProto')
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
@@ -88,4 +79,8 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()
+}
+
+run {
+    environment System.getenv()
 }

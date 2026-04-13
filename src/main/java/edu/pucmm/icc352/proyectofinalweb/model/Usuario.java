@@ -1,8 +1,20 @@
 package edu.pucmm.icc352.proyectofinalweb.model;
 
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Id;
+import dev.morphia.annotations.IndexOptions;
+import dev.morphia.annotations.Indexed;
+import org.bson.types.ObjectId;
+
+@Entity("usuarios")
 public class Usuario {
-    private String id;
+
+    @Id
+    private ObjectId id;
+
+    @Indexed(options = @IndexOptions(unique = true))
     private String username;
+
     private String passwordHash;
     private Rol rol;
 
@@ -10,18 +22,18 @@ public class Usuario {
     }
 
     public Usuario(String id, String username, String passwordHash, Rol rol) {
-        this.id = id;
+        this.id = id != null ? new ObjectId(id) : null;
         this.username = username;
         this.passwordHash = passwordHash;
         this.rol = rol;
     }
 
     public String getId() {
-        return id;
+        return id != null ? id.toHexString() : null;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id != null ? new ObjectId(id) : null;
     }
 
     public String getUsername() {
