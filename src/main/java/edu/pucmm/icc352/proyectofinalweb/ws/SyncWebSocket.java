@@ -7,7 +7,7 @@ import edu.pucmm.icc352.proyectofinalweb.service.AuthService;
 import edu.pucmm.icc352.proyectofinalweb.service.FormularioService;
 import edu.pucmm.icc352.proyectofinalweb.util.JsonUtil;
 import io.javalin.Javalin;
-import io.javalin.websocket.WsContext;
+import io.javalin.websocket.WsMessageContext;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class SyncWebSocket {
         app.ws("/ws/sync", ws -> ws.onMessage(this::procesarMensaje));
     }
 
-    private void procesarMensaje(WsContext ctx) {
+    private void procesarMensaje(WsMessageContext  ctx) {
         try {
             SyncDto syncDto = JsonUtil.fromJson(ctx.message(), SyncDto.class);
             Optional<Usuario> usuario = authService.validarTokenYBuscarUsuario(syncDto.getToken());
@@ -46,7 +46,7 @@ public class SyncWebSocket {
         }
     }
 
-    private void enviar(WsContext ctx, boolean ok, String mensaje, int cantidad) {
+    private void enviar(WsMessageContext ctx, boolean ok, String mensaje, int cantidad) {
         Map<String, Object> respuesta = new LinkedHashMap<>();
         respuesta.put("ok", ok);
         respuesta.put("mensaje", mensaje);
