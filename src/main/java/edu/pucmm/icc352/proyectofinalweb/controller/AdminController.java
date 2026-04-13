@@ -30,9 +30,9 @@ public class AdminController {
             return;
         }
 
-        String username = ctx.formParam("username", "").trim();
-        String password = ctx.formParam("password", "").trim();
-        String rolTexto = ctx.formParam("rol", "ENCUESTADOR").trim();
+        String username = ctx.formParam("username") != null ? ctx.formParam("username").trim() : "";
+        String password = ctx.formParam("password") != null ? ctx.formParam("password").trim() : "";
+        String rolTexto = ctx.formParam("rol") != null ? ctx.formParam("rol").trim() : "ENCUESTADOR";
 
         if (username.isBlank() || password.isBlank() || authService.existeUsuario(username)) {
             ctx.redirect("/admin");
