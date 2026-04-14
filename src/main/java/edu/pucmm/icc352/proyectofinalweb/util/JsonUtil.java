@@ -2,11 +2,13 @@ package edu.pucmm.icc352.proyectofinalweb.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public final class JsonUtil {
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
+        MAPPER.registerModule(new JavaTimeModule()); // 🔥 ESTA LINEA ES LA CLAVE
         MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 

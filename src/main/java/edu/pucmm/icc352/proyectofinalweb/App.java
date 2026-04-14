@@ -1,10 +1,7 @@
 package edu.pucmm.icc352.proyectofinalweb;
 
 import edu.pucmm.icc352.proyectofinalweb.config.AppConfig;
-import edu.pucmm.icc352.proyectofinalweb.controller.AdminController;
-import edu.pucmm.icc352.proyectofinalweb.controller.AuthController;
-import edu.pucmm.icc352.proyectofinalweb.controller.FormularioController;
-import edu.pucmm.icc352.proyectofinalweb.controller.PaginaController;
+import edu.pucmm.icc352.proyectofinalweb.controller.*;
 import edu.pucmm.icc352.proyectofinalweb.db.MongoUtil;
 import edu.pucmm.icc352.proyectofinalweb.grpc.GrpcServerManager;
 import edu.pucmm.icc352.proyectofinalweb.repository.FormularioRepository;
@@ -38,12 +35,17 @@ public class App {
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
             config.showJavalinBanner = false;
+
+            config.jetty.modifyWebSocketServletFactory(factory -> {
+                factory.setMaxTextMessageSize(1024 * 1024);
+            });
         });
 
         new PaginaController(usuarioRepository, formularioRepository).registrar(app);
         new AuthController(authService).registrar(app);
         new FormularioController(authService, formularioService).registrar(app);
         new AdminController(authService, usuarioRepository, formularioRepository).registrar(app);
+        new DashboardController(formularioRepository).registrar(app);
         new SyncWebSocket(authService, formularioService).registrar(app);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

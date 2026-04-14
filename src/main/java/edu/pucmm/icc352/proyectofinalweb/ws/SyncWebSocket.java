@@ -23,7 +23,25 @@ public class SyncWebSocket {
     }
 
     public void registrar(Javalin app) {
-        app.ws("/ws/sync", ws -> ws.onMessage(this::procesarMensaje));
+        app.ws("/ws/sync", ws -> {
+            ws.onConnect(ctx -> {
+                System.out.println("Cliente conectado a /ws/sync");
+            });
+
+            ws.onMessage(ctx -> {
+                System.out.println("MENSAJE RECIBIDO: " + ctx.message());
+                procesarMensaje(ctx);
+            });
+
+            ws.onClose(ctx -> {
+                System.out.println("Cliente desconectado");
+            });
+
+            ws.onError(ctx -> {
+                System.out.println("Error en WebSocket");
+                ctx.error().printStackTrace();
+            });
+        });
     }
 
     private void procesarMensaje(WsMessageContext  ctx) {
