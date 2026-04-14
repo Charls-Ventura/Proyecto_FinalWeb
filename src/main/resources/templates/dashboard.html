@@ -7,70 +7,71 @@
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/css/estilos.css">
 </head>
-<body>
-<header class="barra-superior">
-  <div>
-    <h1>Proyecto Final Web</h1>
-    <p>Usuario: <strong th:text="${username}">usuario</strong> | Rol: <strong th:text="${rol}">rol</strong></p>
-  </div>
-  <nav>
-    <a href="/mapa" class="boton boton-secundario">Mapa</a>
-    <a href="/admin" class="boton boton-secundario" th:if="${rol == 'ADMIN'}">Admin</a>
-    <a href="/logout" class="boton boton-peligro">Salir</a>
-  </nav>
-</header>
+<body class="layout-app">
 
-<main class="contenedor-principal dos-columnas">
-  <section class="tarjeta">
-    <h2>Nuevo formulario</h2>
-    <form id="formularioEncuesta" class="formulario-simple">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" required>
+<div th:replace="~{sidebar :: sidebar('dashboard', ${username}, ${rol})}"></div>
 
-      <label for="sector">Sector</label>
-      <input type="text" id="sector" required>
-
-      <label for="nivelEscolar">Nivel escolar</label>
-      <select id="nivelEscolar" required>
-        <option value="">Seleccione</option>
-        <option>Básico</option>
-        <option>Medio</option>
-        <option>Grado Universitario</option>
-        <option>Postgrado</option>
-        <option>Doctorado</option>
-      </select>
-
-      <label for="foto">Foto</label>
-      <input type="file" id="foto" accept="image/*" capture="environment">
-
-      <div class="fila-botones">
-        <button type="submit" class="boton boton-principal">Guardar local</button>
-        <button type="button" id="btnSincronizar" class="boton boton-exito">Sincronizar</button>
-      </div>
-    </form>
-
+<main class="contenido-principal">
+  <div class="pagina-header">
+    <h1>Panel del encuestador</h1>
     <div class="estado-conexion">
-      <span id="estadoConexion">Verificando conexión...</span>
+      <span class="punto-conexion" id="puntoConexion"></span>
+      <span id="estadoConexion">Verificando...</span>
     </div>
-    <div id="mensajeDashboard" class="mensaje"></div>
-  </section>
+  </div>
 
-  <section class="tarjeta">
-    <h2>Registros pendientes</h2>
-    <div class="tabla-responsive">
-      <table>
-        <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Sector</th>
-          <th>Nivel</th>
-          <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody id="tablaPendientes"></tbody>
-      </table>
-    </div>
-  </section>
+  <div class="dos-columnas">
+    <section class="tarjeta">
+      <h2>Nuevo formulario</h2>
+      <form id="formularioEncuesta" class="formulario-simple">
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Nombre completo" required>
+        </div>
+        <div class="campo">
+          <label for="sector">Sector</label>
+          <input type="text" id="sector" placeholder="Sector o barrio" required>
+        </div>
+        <div class="campo">
+          <label for="nivelEscolar">Nivel escolar</label>
+          <select id="nivelEscolar" required>
+            <option value="">Seleccione</option>
+            <option>Básico</option>
+            <option>Medio</option>
+            <option>Grado Universitario</option>
+            <option>Postgrado</option>
+            <option>Doctorado</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="foto">Foto</label>
+          <input type="file" id="foto" accept="image/*" capture="environment">
+        </div>
+        <div class="fila-botones">
+          <button type="submit" class="boton boton-principal">Guardar local</button>
+          <button type="button" id="btnSincronizar" class="boton boton-exito">Sincronizar</button>
+        </div>
+      </form>
+      <div id="mensajeDashboard" class="mensaje oculto"></div>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Registros pendientes</h2>
+      <div class="tabla-responsive">
+        <table>
+          <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Sector</th>
+            <th>Nivel</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody id="tablaPendientes"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </main>
 
 <script src="/js/dashboard.js"></script>

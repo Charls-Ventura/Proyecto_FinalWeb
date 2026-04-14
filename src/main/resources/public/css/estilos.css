@@ -175,3 +175,37 @@ td {
         flex-direction: column;
     }
 }
+.icono-login {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #dbeafe;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+}
+
+.campo {
+    display: grid;
+    gap: 6px;
+}
+
+.campo label {
+    font-size: 13px;
+    color: #475569;
+}
+
+.boton-completo {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.oculto {
+    display: none;
+}
+
+.mensaje:not(:empty) {
+    display: block;
+}

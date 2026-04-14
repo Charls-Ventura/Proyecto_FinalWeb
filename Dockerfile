@@ -13,7 +13,7 @@ RUN gradle dependencies --no-daemon || true
 COPY src/ src/
 
 # Generar la distribución ejecutable
-RUN gradle installDist --no-daemon
+RUN gradle generateProto installDist --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine
 
@@ -30,6 +30,6 @@ ENV APP_PORT=7000 \
     GRPC_PORT=50051 \
     MONGO_URL=mongodb://mongo:27017 \
     MONGO_DB=proyecto_final_web \
-    JWT_SECRET=clave-super-secreta-cambiar-en-produccion-2026
+    JWT_SECRET=cambiar-en-produccion
 
 ENTRYPOINT ["bin/Proyecto_FinalWeb"]

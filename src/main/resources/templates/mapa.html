@@ -7,21 +7,15 @@
   <link rel="stylesheet" href="/css/estilos.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
-<body>
-<header class="barra-superior">
-  <div>
-    <h1>Mapa de registros</h1>
-    <p>Usuario: <strong th:text="${username}">usuario</strong></p>
-  </div>
-  <nav>
-    <a href="/dashboard" class="boton boton-secundario">Panel</a>
-    <a href="/logout" class="boton boton-peligro">Salir</a>
-  </nav>
-</header>
+<body class="layout-app">
 
-<main class="contenedor-principal">
+<div th:replace="~{sidebar :: sidebar('mapa', ${username}, ${rol})}"></div>
+
+<main class="contenido-principal">
+  <div class="pagina-header">
+    <h1>Mapa de registros</h1>
+  </div>
   <section class="tarjeta">
-    <h2>Ubicaciones de formularios</h2>
     <div id="mapaLeaflet"></div>
   </section>
 </main>

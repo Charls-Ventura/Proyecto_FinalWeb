@@ -19,9 +19,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    public void registrar(Javalin app) {
-        app.post("/api/auth/login", this::loginApi);
-        app.get("/logout", this::logout);
+    public void registrar(Javalin router) {
+        router.post("/api/auth/login", this::loginApi);
+        router.get("/logout", this::logout);
     }
 
     private void loginApi(Context ctx) {
