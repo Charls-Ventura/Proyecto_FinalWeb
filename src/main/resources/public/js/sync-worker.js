@@ -1,20 +1,44 @@
 self.onmessage = function (event) {
-    const data = event.data;
-    const socket = new WebSocket(data.socketUrl);
+    const { socketUrl, token, formularios } = event.data;
 
-    socket.onopen = function () {
-        socket.send(JSON.stringify({
-            token: data.token,
-            formularios: data.formularios
-        }));
-    };
+    try {
+        const socket = new WebSocket(socketUrl);
 
-    socket.onmessage = function (message) {
-        self.postMessage(JSON.parse(message.data));
-        socket.close();
-    };
+        socket.onopen = function () {
+            socket.send(JSON.stringify({
+                token: token,
+                formularios: formularios
+            }));
+        };
 
-    socket.onerror = function () {
-        self.postMessage({ok: false, mensaje: 'No se pudo sincronizar con el servidor.'});
-    };
+        socket.onmessage = function (event) {
+            try {
+                const respuesta = JSON.parse(event.data);
+                self.postMessage(respuesta);
+            } catch (e) {
+                self.postMessage({
+                    ok: false,
+                    mensaje: 'Respuesta inválida del servidor.'
+                });
+            }
+            socket.close();
+        };
+
+        socket.onerror = function () {
+            self.postMessage({
+                ok: false,
+                mensaje: 'Error conectando al WebSocket de sincronización.'
+            });
+        };
+
+        socket.onclose = function () {
+            // no hacer nada aquí para no duplicar mensajes
+        };
+
+    } catch (e) {
+        self.postMessage({
+            ok: false,
+            mensaje: 'No se pudo iniciar la sincronización.'
+        });
+    }
 };

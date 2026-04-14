@@ -3,7 +3,7 @@ const ARCHIVOS = [
     '/login',
     '/css/estilos.css',
     '/js/login.js',
-    '/js/dashboard.js',
+    '/js/encuesta.js',
     '/js/sync-worker.js',
     '/logo.svg'
 ];

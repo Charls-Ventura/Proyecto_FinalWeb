@@ -1,192 +1,201 @@
-const CLAVE_FORMULARIOS = 'formulariosPendientes';
-let indiceEdicion = -1;
-let fotoBase64Actual = '';
+let graficaNivel = null;
+let graficaSectores = null;
+let socketDashboard = null;
 
-function leerPendientes() {
-    const data = localStorage.getItem(CLAVE_FORMULARIOS);
-    return data ? JSON.parse(data) : [];
-}
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarEstadoConexion();
+    cargarResumenDashboard();
+    conectarDashboardSocket();
 
-function guardarPendientes(lista) {
-    localStorage.setItem(CLAVE_FORMULARIOS, JSON.stringify(lista));
-}
-
-function mostrarMensaje(texto) {
-    document.getElementById('mensajeDashboard').textContent = texto;
-}
-
-function actualizarConexion() {
-    document.getElementById('estadoConexion').textContent = navigator.onLine ? 'En línea' : 'Sin conexión';
-}
-
-function limpiarFormulario() {
-    document.getElementById('formularioEncuesta').reset();
-    fotoBase64Actual = '';
-    indiceEdicion = -1;
-}
-
-function renderPendientes() {
-    const tbody = document.getElementById('tablaPendientes');
-    const lista = leerPendientes();
-    tbody.innerHTML = '';
-
-    if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">No hay registros pendientes.</td></tr>';
-        return;
-    }
-
-    lista.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${item.nombre}</td>
-            <td>${item.sector}</td>
-            <td>${item.nivelEscolar}</td>
-            <td>
-                <button class="boton boton-secundario" type="button" onclick="editarRegistro(${index})">Editar</button>
-                <button class="boton boton-peligro" type="button" onclick="eliminarRegistro(${index})">Borrar</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function editarRegistro(index) {
-    const lista = leerPendientes();
-    const item = lista[index];
-    if (!item) {
-        return;
-    }
-
-    indiceEdicion = index;
-    document.getElementById('nombre').value = item.nombre;
-    document.getElementById('sector').value = item.sector;
-    document.getElementById('nivelEscolar').value = item.nivelEscolar;
-    fotoBase64Actual = item.fotoBase64 || '';
-    mostrarMensaje('Registro cargado para editar.');
-}
-
-function eliminarRegistro(index) {
-    const lista = leerPendientes();
-    lista.splice(index, 1);
-    guardarPendientes(lista);
-    renderPendientes();
-    mostrarMensaje('Registro eliminado del almacenamiento local.');
-}
-
-function obtenerUbicacion() {
-    return new Promise((resolve) => {
-        if (!navigator.geolocation) {
-            resolve({latitud: 0, longitud: 0});
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => resolve({
-                latitud: position.coords.latitude,
-                longitud: position.coords.longitude
-            }),
-            () => resolve({latitud: 0, longitud: 0})
-        );
-    });
-}
-
-function leerFotoComoBase64(file) {
-    return new Promise((resolve) => {
-        if (!file) {
-            resolve(fotoBase64Actual || '');
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result || '');
-        reader.readAsDataURL(file);
-    });
-}
-
-async function guardarLocal(event) {
-    event.preventDefault();
-
-    const nombre = document.getElementById('nombre').value.trim();
-    const sector = document.getElementById('sector').value.trim();
-    const nivelEscolar = document.getElementById('nivelEscolar').value.trim();
-    const foto = document.getElementById('foto').files[0];
-
-    if (!nombre || !sector || !nivelEscolar) {
-        mostrarMensaje('Complete todos los campos.');
-        return;
-    }
-
-    const ubicacion = await obtenerUbicacion();
-    const fotoBase64 = await leerFotoComoBase64(foto);
-    const lista = leerPendientes();
-
-    const registro = {
-        nombre,
-        sector,
-        nivelEscolar,
-        latitud: ubicacion.latitud,
-        longitud: ubicacion.longitud,
-        fotoBase64
-    };
-
-    if (indiceEdicion >= 0) {
-        lista[indiceEdicion] = registro;
-    } else {
-        lista.push(registro);
-    }
-
-    guardarPendientes(lista);
-    renderPendientes();
-    limpiarFormulario();
-    mostrarMensaje('Formulario guardado en el almacenamiento local.');
-}
-
-function sincronizar() {
-    const token = localStorage.getItem('jwt') || '';
-    const pendientes = leerPendientes();
-
-    if (!token) {
-        mostrarMensaje('No hay token guardado. Debe iniciar sesión otra vez.');
-        return;
-    }
-
-    if (pendientes.length === 0) {
-        mostrarMensaje('No hay registros pendientes para sincronizar.');
-        return;
-    }
-
-    if (!window.Worker) {
-        mostrarMensaje('El navegador no soporta Web Worker.');
-        return;
-    }
-
-    const protocolo = location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socketUrl = `${protocolo}//${location.host}/ws/sync`;
-    const worker = new Worker('/js/sync-worker.js');
-
-    worker.onmessage = function (event) {
-        const respuesta = event.data;
-        if (respuesta.ok) {
-            guardarPendientes([]);
-            renderPendientes();
-        }
-        mostrarMensaje(respuesta.mensaje || 'Sincronización terminada.');
-        worker.terminate();
-    };
-
-    worker.postMessage({
-        socketUrl,
-        token,
-        formularios: pendientes
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    actualizarConexion();
-    renderPendientes();
-
-    window.addEventListener('online', actualizarConexion);
-    window.addEventListener('offline', actualizarConexion);
-
-    document.getElementById('formularioEncuesta').addEventListener('submit', guardarLocal);
-    document.getElementById('btnSincronizar').addEventListener('click', sincronizar);
+    window.addEventListener("online", actualizarEstadoConexion);
+    window.addEventListener("offline", actualizarEstadoConexion);
 });
+
+function actualizarEstadoConexion() {
+    const estado = document.getElementById("estadoConexion");
+    const punto = document.getElementById("puntoConexion");
+
+    if (!estado || !punto) return;
+
+    if (navigator.onLine) {
+        estado.textContent = "En línea";
+        punto.style.backgroundColor = "#22c55e";
+    } else {
+        estado.textContent = "Sin conexión";
+        punto.style.backgroundColor = "#ef4444";
+    }
+}
+
+async function cargarResumenDashboard() {
+    try {
+        const response = await fetch("/api/dashboard/resumen");
+        if (!response.ok) throw new Error("No se pudo cargar el resumen");
+        const data = await response.json();
+        actualizarTarjetas(data);
+        renderizarGraficas(data);
+    } catch (error) {
+        console.error("Error cargando dashboard:", error);
+    }
+}
+
+function actualizarTarjetas(data) {
+    const totalFormularios = document.getElementById("totalFormularios");
+    const totalPendientes  = document.getElementById("totalPendientes");
+    const totalSectores    = document.getElementById("totalSectores");
+    const totalUsuarios    = document.getElementById("totalUsuarios");
+
+    const pendientes = JSON.parse(localStorage.getItem("formulariosPendientes") || "[]");
+
+    if (totalFormularios) totalFormularios.textContent = data.totalFormularios ?? 0;
+    if (totalPendientes)  totalPendientes.textContent  = pendientes.length;
+    if (totalSectores)    totalSectores.textContent    = data.totalSectores ?? 0;
+    if (totalUsuarios)    totalUsuarios.textContent    = data.totalUsuarios ?? 0;
+}
+
+function renderizarGraficas(data) {
+    const canvasNivel    = document.getElementById("graficaNivel");
+    const canvasSectores = document.getElementById("graficaSectores");
+
+    if (!canvasNivel || !canvasSectores) return;
+
+    const niveles    = data.niveles    || {};
+    const topSectores = data.topSectores || [];
+
+    if (graficaNivel)    graficaNivel.destroy();
+    if (graficaSectores) graficaSectores.destroy();
+
+
+    const coloresPastel = [
+        "#3b82f6", // Básico - azul
+        "#f43f5e", // Medio - rojo
+        "#f97316", // Grado Universitario - naranja
+        "#eab308", // Postgrado - amarillo
+        "#14b8a6"  // Doctorado - teal
+    ];
+
+    const valoresNivel = [
+        niveles["Básico"]               || niveles["Basico"]               || 0,
+        niveles["Medio"]                || 0,
+        niveles["Grado Universitario"]  || niveles["GradoUniversitario"]   || 0,
+        niveles["Postgrado"]            || 0,
+        niveles["Doctorado"]            || 0
+    ];
+
+    graficaNivel = new Chart(canvasNivel, {
+        type: "doughnut",
+        data: {
+            labels: ["Básico", "Medio", "Grado Universitario", "Postgrado", "Doctorado"],
+            datasets: [{
+                data: valoresNivel,
+                backgroundColor: coloresPastel,
+                borderColor: "#ffffff",
+                borderWidth: 3,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "60%",
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        padding: 16,
+                        usePointStyle: true,
+                        pointStyleWidth: 10,
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = total > 0 ? Math.round((ctx.parsed / total) * 100) : 0;
+                            return ` ${ctx.label}: ${ctx.parsed} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+
+    const coloresBarras = topSectores.map((_, i) => {
+        const paleta = ["#3b82f6", "#6366f1", "#8b5cf6", "#ec4899", "#14b8a6", "#f97316"];
+        return paleta[i % paleta.length];
+    });
+
+    graficaSectores = new Chart(canvasSectores, {
+        type: "bar",
+        data: {
+            labels: topSectores.map(s => s.nombre),
+            datasets: [{
+                label: "Registros",
+                data: topSectores.map(s => s.cantidad),
+                backgroundColor: coloresBarras,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            return ` ${ctx.parsed.y} registro${ctx.parsed.y !== 1 ? "s" : ""}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 12 } }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: { size: 12 }
+                    },
+                    grid: {
+                        color: "rgba(0,0,0,0.05)"
+                    }
+                }
+            }
+        }
+    });
+}
+
+function conectarDashboardSocket() {
+    const protocolo = window.location.protocol === "https:" ? "wss" : "ws";
+    socketDashboard = new WebSocket(`${protocolo}://${window.location.host}/ws/dashboard`);
+
+    socketDashboard.onopen = () => {
+        console.log("WebSocket dashboard conectado");
+    };
+
+    socketDashboard.onmessage = (event) => {
+        try {
+            const mensaje = JSON.parse(event.data);
+            if (mensaje.tipo === "dashboard-update") {
+                actualizarTarjetas(mensaje.payload);
+                renderizarGraficas(mensaje.payload);
+            }
+        } catch (error) {
+            console.error("Error procesando mensaje dashboard:", error);
+        }
+    };
+
+    socketDashboard.onclose = () => {
+        setTimeout(conectarDashboardSocket, 3000);
+    };
+
+    socketDashboard.onerror = (error) => {
+        console.error("Error WebSocket dashboard:", error);
+    };
+}
