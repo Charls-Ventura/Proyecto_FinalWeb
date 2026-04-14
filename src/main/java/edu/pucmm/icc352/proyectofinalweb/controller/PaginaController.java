@@ -23,6 +23,7 @@ public class PaginaController {
         app.get("/", this::inicio);
         app.get("/login", this::login);
         app.get("/dashboard", this::dashboard);
+        app.get("/encuesta", this::encuesta);
         app.get("/admin", this::admin);
         app.get("/mapa", this::mapa);
     }
@@ -40,9 +41,10 @@ public class PaginaController {
             ctx.redirect("/dashboard");
             return;
         }
+
         Map<String, Object> datos = new HashMap<>();
         datos.put("titulo", "Proyecto Final Web");
-        ctx.html(VistaUtil.render("login.html", datos));
+        ctx.html(VistaUtil.render("login", datos));
     }
 
     private void dashboard(Context ctx) {
@@ -50,11 +52,34 @@ public class PaginaController {
             ctx.redirect("/login");
             return;
         }
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("titulo", "Panel del encuestador");
-        datos.put("username", SesionUtil.username(ctx));
-        datos.put("rol", SesionUtil.rol(ctx).name());
-        ctx.html(VistaUtil.render("dashboard.html", datos));
+
+        String rol = SesionUtil.rol(ctx).name();
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", rol);
+
+        if ("ADMIN".equals(rol)) {
+            modelo.put("titulo", "Dashboard");
+            ctx.html(VistaUtil.render("dashboard.html", modelo));
+        } else {
+            modelo.put("titulo", "Mi panel");
+            ctx.html(VistaUtil.render("dashboard-encuestador.html", modelo));
+        }
+    }
+
+    private void encuesta(Context ctx) {
+        if (!SesionUtil.estaLogueado(ctx)) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("titulo", "Encuesta");
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", SesionUtil.rol(ctx).name());
+
+        ctx.html(VistaUtil.render("encuesta.html", modelo));
     }
 
     private void admin(Context ctx) {
@@ -62,12 +87,15 @@ public class PaginaController {
             ctx.redirect("/dashboard");
             return;
         }
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("titulo", "Administración");
-        datos.put("username", SesionUtil.username(ctx));
-        datos.put("usuarios", usuarioRepository.listarTodos());
-        datos.put("formularios", formularioRepository.listarTodos());
-        ctx.html(VistaUtil.render("admin.html", datos));
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("titulo", "Administración");
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", SesionUtil.rol(ctx).name());
+        modelo.put("usuarios", usuarioRepository.listarTodos());
+        modelo.put("formularios", formularioRepository.listarTodos());
+
+        ctx.html(VistaUtil.render("admin.html", modelo));
     }
 
     private void mapa(Context ctx) {
@@ -75,9 +103,12 @@ public class PaginaController {
             ctx.redirect("/login");
             return;
         }
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("titulo", "Mapa de registros");
-        datos.put("username", SesionUtil.username(ctx));
-        ctx.html(VistaUtil.render("mapa.html", datos));
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("titulo", "Mapa de registros");
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", SesionUtil.rol(ctx).name());
+
+        ctx.html(VistaUtil.render("mapa.html", modelo));
     }
 }
