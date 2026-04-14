@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Encuesta</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body class="layout-app">
+
+<div th:replace="~{sidebar :: sidebar('encuesta', ${username}, ${rol})}"></div>
+
+<main class="contenido-principal">
+    <div class="pagina-header">
+        <h1 th:text="${titulo}">Encuesta</h1>
+        <div class="estado-conexion">
+            <span class="punto-conexion" id="puntoConexion"></span>
+            <span id="estadoConexion">Verificando...</span>
+        </div>
+    </div>
+
+    <div class="dos-columnas">
+        <section class="tarjeta">
+            <h2>Nuevo formulario</h2>
+            <form id="formularioEncuesta" class="formulario-simple">
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre completo" required>
+                </div>
+                <div class="campo">
+                    <label for="sector">Sector</label>
+                    <input type="text" id="sector" placeholder="Sector o barrio" required>
+                </div>
+                <div class="campo">
+                    <label for="nivelEscolar">Nivel escolar</label>
+                    <select id="nivelEscolar" required>
+                        <option value="">Seleccione</option>
+                        <option>Básico</option>
+                        <option>Medio</option>
+                        <option>Grado Universitario</option>
+                        <option>Postgrado</option>
+                        <option>Doctorado</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="foto">Foto</label>
+                    <input type="file" id="foto" accept="image/*" capture="environment">
+                </div>
+                <div class="campo">
+                    <button type="button" id="btnUbicacion" class="boton boton-secundario boton-completo">
+                        Obtener ubicación GPS
+                    </button>
+                </div>
+
+                <div id="contenedorUbicacion" class="oculto">
+                    <div class="campo">
+                        <label>Ubicación detectada</label>
+                        <div class="fila-doble">
+                            <div class="campo" style="margin-bottom: 0;">
+                                <label for="latitud">Latitud</label>
+                                <input type="text" id="latitud" placeholder="Latitud" readonly>
+                            </div>
+                            <div class="campo" style="margin-bottom: 0;">
+                                <label for="longitud">Longitud</label>
+                                <input type="text" id="longitud" placeholder="Longitud" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fila-botones">
+                    <button type="submit" class="boton boton-principal">Guardar local</button>
+                    <button type="button" id="btnSincronizar" class="boton boton-exito">Sincronizar</button>
+                </div>
+            </form>
+            <div id="mensajeEncuesta" class="mensaje oculto"></div>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Registros pendientes</h2>
+            <div class="tabla-responsive">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Sector</th>
+                        <th>Nivel</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablaPendientes"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="/js/encuesta.js"></script>
+</body>
+</html>

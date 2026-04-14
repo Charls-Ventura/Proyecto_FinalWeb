@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${titulo}">Mi panel</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body class="layout-app">
+
+<div th:replace="~{sidebar :: sidebar('dashboard', ${username}, ${rol})}"></div>
+
+<main class="contenido-principal">
+  <div class="pagina-header">
+    <h1 th:text="${titulo}">Mi panel</h1>
+    <div class="estado-conexion">
+      <span class="punto-conexion" id="puntoConexion"></span>
+      <span id="estadoConexion">Verificando...</span>
+    </div>
+  </div>
+
+  <div class="dos-columnas" style="margin-bottom: 24px;">
+    <section class="tarjeta">
+      <h2>Mis pendientes locales</h2>
+      <div class="numero-dashboard" id="misPendientes">0</div>
+      <p class="texto-suave">Formularios guardados en este dispositivo</p>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Mis sincronizados</h2>
+      <div class="numero-dashboard" id="misSincronizados">0</div>
+      <p class="texto-suave">Formularios enviados al servidor</p>
+    </section>
+  </div>
+
+  <div class="dos-columnas">
+    <section class="tarjeta">
+      <h2>Mi último sector</h2>
+      <div class="numero-dashboard" id="ultimoSector" style="font-size: 28px;">-</div>
+      <p class="texto-suave">Último sector registrado localmente</p>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Acceso rápido</h2>
+      <p class="texto-suave" style="margin-bottom: 16px;">Ir directamente al formulario para registrar una nueva encuesta.</p>
+      <a href="/encuesta" class="boton boton-principal" style="text-decoration: none; display: inline-block;">Nueva encuesta</a>
+    </section>
+  </div>
+</main>
+
+<script src="/js/dashboard-encuestador.js"></script>
+</body>
+</html>

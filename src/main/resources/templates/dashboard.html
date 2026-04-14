@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${titulo}">Panel</title>
-  <link rel="manifest" href="/manifest.json">
+  <title th:text="${titulo}">Dashboard</title>
   <link rel="stylesheet" href="/css/estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="layout-app">
 
@@ -13,62 +13,53 @@
 
 <main class="contenido-principal">
   <div class="pagina-header">
-    <h1>Panel del encuestador</h1>
+    <h1 th:text="${titulo}">Dashboard</h1>
     <div class="estado-conexion">
       <span class="punto-conexion" id="puntoConexion"></span>
       <span id="estadoConexion">Verificando...</span>
     </div>
   </div>
 
-  <div class="dos-columnas">
+  <div class="dos-columnas" style="margin-bottom: 24px;">
     <section class="tarjeta">
-      <h2>Nuevo formulario</h2>
-      <form id="formularioEncuesta" class="formulario-simple">
-        <div class="campo">
-          <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" placeholder="Nombre completo" required>
-        </div>
-        <div class="campo">
-          <label for="sector">Sector</label>
-          <input type="text" id="sector" placeholder="Sector o barrio" required>
-        </div>
-        <div class="campo">
-          <label for="nivelEscolar">Nivel escolar</label>
-          <select id="nivelEscolar" required>
-            <option value="">Seleccione</option>
-            <option>Básico</option>
-            <option>Medio</option>
-            <option>Grado Universitario</option>
-            <option>Postgrado</option>
-            <option>Doctorado</option>
-          </select>
-        </div>
-        <div class="campo">
-          <label for="foto">Foto</label>
-          <input type="file" id="foto" accept="image/*" capture="environment">
-        </div>
-        <div class="fila-botones">
-          <button type="submit" class="boton boton-principal">Guardar local</button>
-          <button type="button" id="btnSincronizar" class="boton boton-exito">Sincronizar</button>
-        </div>
-      </form>
-      <div id="mensajeDashboard" class="mensaje oculto"></div>
+      <h2>Total sincronizados</h2>
+      <div class="numero-dashboard" id="totalFormularios">0</div>
+      <p class="texto-suave">Formularios guardados en servidor</p>
     </section>
 
     <section class="tarjeta">
-      <h2>Registros pendientes</h2>
-      <div class="tabla-responsive">
-        <table>
-          <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Sector</th>
-            <th>Nivel</th>
-            <th>Acciones</th>
-          </tr>
-          </thead>
-          <tbody id="tablaPendientes"></tbody>
-        </table>
+      <h2>Pendientes locales</h2>
+      <div class="numero-dashboard" id="totalPendientes">0</div>
+      <p class="texto-suave">Registros aún no sincronizados</p>
+    </section>
+  </div>
+
+  <div class="dos-columnas" style="margin-bottom: 24px;">
+    <section class="tarjeta">
+      <h2>Sectores únicos</h2>
+      <div class="numero-dashboard" id="totalSectores">0</div>
+      <p class="texto-suave">Cantidad de sectores encuestados</p>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Usuarios con registros</h2>
+      <div class="numero-dashboard" id="totalUsuarios">0</div>
+      <p class="texto-suave">Encuestadores que han enviado datos</p>
+    </section>
+  </div>
+
+  <div class="dos-columnas">
+    <section class="tarjeta">
+      <h2>Nivel escolar</h2>
+      <div class="contenedor-grafica">
+        <canvas id="graficaNivel"></canvas>
+      </div>
+    </section>
+
+    <section class="tarjeta">
+      <h2>Top sectores</h2>
+      <div class="contenedor-grafica">
+        <canvas id="graficaSectores"></canvas>
       </div>
     </section>
   </div>

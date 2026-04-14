@@ -21,7 +21,7 @@ public final class VistaUtil {
     private static TemplateEngine crearMotor() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix("/templates/");
-        resolver.setSuffix("");
+        resolver.setSuffix(".html");
         resolver.setCharacterEncoding("UTF-8");
         resolver.setTemplateMode("HTML");
         resolver.setCacheable(false);
