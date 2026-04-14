@@ -9,6 +9,7 @@ body {
     color: #1f2937;
 }
 
+/* ── Login ─────────────────────────────────────── */
 .pagina-login {
     min-height: 100vh;
     display: flex;
@@ -20,15 +21,7 @@ body {
 
 .contenedor-login {
     width: 100%;
-    max-width: 450px;
-}
-
-.tarjeta {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    margin-bottom: 24px;
+    max-width: 420px;
 }
 
 .encabezado-login {
@@ -36,145 +29,6 @@ body {
     margin-bottom: 20px;
 }
 
-.logo-principal {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 8px;
-}
-
-.barra-superior {
-    background: #153b7a;
-    color: white;
-    padding: 18px 24px;
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.barra-superior h1,
-.tarjeta h2 {
-    margin: 0 0 10px 0;
-}
-
-.contenedor-principal {
-    padding: 24px;
-}
-
-.dos-columnas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-}
-
-.formulario-simple {
-    display: grid;
-    gap: 10px;
-}
-
-input,
-select,
-button {
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #cbd5e1;
-    font-size: 15px;
-}
-
-button {
-    cursor: pointer;
-    border: none;
-}
-
-.boton {
-    display: inline-block;
-    text-decoration: none;
-    text-align: center;
-    color: white;
-}
-
-.boton-principal {
-    background: #1d4ed8;
-}
-
-.boton-secundario {
-    background: #475569;
-}
-
-.boton-exito {
-    background: #0f766e;
-}
-
-.boton-peligro {
-    background: #b91c1c;
-}
-
-.fila-botones {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.mensaje {
-    margin-top: 14px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #e2e8f0;
-    min-height: 45px;
-}
-
-.nota-login,
-.estado-conexion {
-    margin-top: 14px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #eff6ff;
-}
-
-.tabla-responsive {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
-    vertical-align: top;
-}
-
-#mapaLeaflet {
-    width: 100%;
-    height: 500px;
-    border-radius: 12px;
-}
-
-.imagen-mini {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-@media (max-width: 640px) {
-    .barra-superior {
-        padding: 16px;
-    }
-
-    .contenedor-principal {
-        padding: 16px;
-    }
-
-    .fila-botones {
-        flex-direction: column;
-    }
-}
 .icono-login {
     width: 56px;
     height: 56px;
@@ -187,25 +41,377 @@ td {
     margin: 0 auto 12px;
 }
 
-.campo {
-    display: grid;
-    gap: 6px;
-}
-
-.campo label {
+.nota-login {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #eff6ff;
     font-size: 13px;
     color: #475569;
 }
 
-.boton-completo {
-    width: 100%;
-    margin-top: 4px;
+/* ── Layout app con sidebar ─────────────────────── */
+.layout-app {
+    display: flex;
+    min-height: 100vh;
 }
 
-.oculto {
-    display: none;
+.sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: #153b7a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
 }
 
-.mensaje:not(:empty) {
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-logo {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-app {
     display: block;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.sidebar-pucmm {
+    display: block;
+    font-size: 11px;
+    opacity: 0.6;
+    letter-spacing: 1px;
+}
+
+.sidebar-usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.sidebar-username {
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-rol {
+    font-size: 11px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.sidebar-link.activo {
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-weight: bold;
+}
+
+.sidebar-footer {
+    padding: 8px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-logout {
+    color: rgba(255,100,100,0.85);
+}
+
+.sidebar-logout:hover {
+    background: rgba(255,100,100,0.15);
+    color: #ff8080;
+}
+
+/* ── Contenido principal ────────────────────────── */
+.contenido-principal {
+    margin-left: 220px;
+    flex: 1;
+    padding: 28px;
+    min-height: 100vh;
+}
+
+.pagina-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pagina-header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* ── Estado conexión ────────────────────────────── */
+.estado-conexion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.punto-conexion {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9ca3af;
+    display: inline-block;
+}
+
+/* ── Cards y layout ─────────────────────────────── */
+.tarjeta {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 0;
+}
+
+.tarjeta h2 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: #374151;
+}
+
+.dos-columnas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+/* ── Formularios ────────────────────────────────── */
+.formulario-simple {
+    display: grid;
+    gap: 14px;
+}
+
+.campo {
+    display: grid;
+    gap: 5px;
+}
+
+.campo label {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: bold;
+}
+
+input,
+select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: white;
+    width: 100%;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(29,78,216,0.1);
+}
+
+input[type="file"] {
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* ── Botones ────────────────────────────────────── */
+button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.boton {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.boton-principal { background: #1d4ed8; }
+.boton-principal:hover { background: #1e40af; }
+.boton-secundario { background: #475569; }
+.boton-secundario:hover { background: #334155; }
+.boton-exito { background: #0f766e; }
+.boton-exito:hover { background: #0d6b63; }
+.boton-peligro { background: #b91c1c; }
+.boton-peligro:hover { background: #991b1b; }
+.boton-completo { width: 100%; }
+
+.fila-botones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ── Mensajes ───────────────────────────────────── */
+.mensaje {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    font-size: 13px;
+}
+
+.oculto { display: none; }
+.mensaje:not(:empty) { display: block; }
+
+/* ── Tablas ─────────────────────────────────────── */
+.tabla-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #f9fafb;
+}
+
+/* ── Mapa ───────────────────────────────────────── */
+#mapaLeaflet {
+    width: 100%;
+    height: calc(100vh - 180px);
+    border-radius: 10px;
+    min-height: 400px;
+}
+
+/* ── Responsive mobile ──────────────────────────── */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        padding: 8px;
+    }
+
+    .sidebar-footer {
+        padding: 8px;
+        border-top: none;
+        border-left: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .contenido-principal {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .layout-app {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+    }
 }
