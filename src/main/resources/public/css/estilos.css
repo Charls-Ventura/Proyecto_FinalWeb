@@ -549,3 +549,39 @@ tr:hover td {
     height: 260px;
     width: 100%;
 }
+
+textarea {
+    width: 100%;
+    border: 1px solid #d9dee7;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    background: #fff;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla th, .tabla td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.tabla th {
+    background: #f9fafb;
+    font-weight: 600;
+}
+
+.badge-verde {
+    background: #22c55e;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+}

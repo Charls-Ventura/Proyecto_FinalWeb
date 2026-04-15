@@ -312,3 +312,82 @@ document.addEventListener('DOMContentLoaded', function () {
         btnUbicacion.addEventListener('click', obtenerUbicacionGPS);
     }
 });
+
+// ================== CAMARA ==================
+let streamCamara = null;
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnTomarFoto = document.getElementById('btnTomarFoto');
+    const btnCapturarFoto = document.getElementById('btnCapturarFoto');
+    const btnCerrarCamara = document.getElementById('btnCerrarCamara');
+
+    if (btnTomarFoto) {
+        btnTomarFoto.addEventListener('click', abrirCamaraFrontal);
+    }
+
+    if (btnCapturarFoto) {
+        btnCapturarFoto.addEventListener('click', capturarFoto);
+    }
+
+    if (btnCerrarCamara) {
+        btnCerrarCamara.addEventListener('click', cerrarCamara);
+    }
+});
+
+async function abrirCamaraFrontal() {
+    const contenedor = document.getElementById('camaraContainer');
+    const video = document.getElementById('videoCamara');
+
+    try {
+        streamCamara = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' },
+            audio: false
+        });
+
+        video.srcObject = streamCamara;
+        contenedor.classList.remove('oculto');
+    } catch (error) {
+        console.error(error);
+        alert('No se pudo acceder a la cámara.');
+    }
+}
+
+function capturarFoto() {
+    const video = document.getElementById('videoCamara');
+    const canvas = document.getElementById('canvasFoto');
+
+    if (!video.videoWidth) {
+        alert('La cámara aún no está lista.');
+        return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+
+    // 🔥 AQUÍ SE GUARDA LA FOTO PARA TU SISTEMA
+    fotoBase64Actual = canvas.toDataURL('image/jpeg');
+
+    cerrarCamara();
+    mostrarMensaje('Foto capturada correctamente.');
+}
+
+function cerrarCamara() {
+    const contenedor = document.getElementById('camaraContainer');
+    const video = document.getElementById('videoCamara');
+
+    if (streamCamara) {
+        streamCamara.getTracks().forEach(track => track.stop());
+        streamCamara = null;
+    }
+
+    if (video) {
+        video.srcObject = null;
+    }
+
+    if (contenedor) {
+        contenedor.classList.add('oculto');
+    }
+}

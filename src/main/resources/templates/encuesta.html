@@ -44,8 +44,27 @@
                     </select>
                 </div>
                 <div class="campo">
-                    <label for="foto">Foto</label>
-                    <input type="file" id="foto" accept="image/*" capture="environment">
+                    <label for="foto">Foto (subir o tomar)</label>
+
+                    <input type="file" id="foto" accept="image/*">
+
+                    <div class="fila-botones" style="margin-top: 12px;">
+                        <button type="button" id="btnTomarFoto" class="boton boton-secundario">
+                            Tomar foto
+                        </button>
+                    </div>
+
+                    <!-- Cámara -->
+                    <div id="camaraContainer" class="oculto" style="margin-top: 16px;">
+                        <video id="videoCamara" autoplay playsinline style="width: 100%; border-radius: 12px;"></video>
+
+                        <div class="fila-botones" style="margin-top: 12px;">
+                            <button type="button" id="btnCapturarFoto" class="boton boton-principal">Capturar</button>
+                            <button type="button" id="btnCerrarCamara" class="boton boton-secundario">Cerrar</button>
+                        </div>
+
+                        <canvas id="canvasFoto" style="display: none;"></canvas>
+                    </div>
                 </div>
                 <div class="campo">
                     <button type="button" id="btnUbicacion" class="boton boton-secundario boton-completo">
