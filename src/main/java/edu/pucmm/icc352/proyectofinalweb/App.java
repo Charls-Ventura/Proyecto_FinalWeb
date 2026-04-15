@@ -54,9 +54,11 @@ public class App {
             MongoUtil.cerrar();
         }));
 
-        app.start(AppConfig.httpPort());
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", String.valueOf(AppConfig.httpPort())));
 
-        System.out.println("HTTP iniciado en http://localhost:" + AppConfig.httpPort());
+        app.start(port);
+
+        System.out.println("HTTP iniciado en http://localhost:" + port);
         System.out.println("gRPC iniciado en puerto " + AppConfig.grpcPort());
         System.out.println("Usuario admin por defecto: admin / admin123");
     }
