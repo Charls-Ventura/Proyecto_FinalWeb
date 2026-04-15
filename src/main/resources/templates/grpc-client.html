@@ -1,10 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${titulo}">Cliente gRPC</title>
+  <link rel="stylesheet" href="/css/estilos.css">
 </head>
-<body>
-$END$
+<body class="layout-app">
+
+<div th:replace="~{sidebar :: sidebar('grpc-client', ${username}, ${rol})}"></div>
+
+<main class="contenido-principal">
+  <div class="pagina-header">
+    <h1 th:text="${titulo}">Cliente gRPC</h1>
+  </div>
+
+  <section class="tarjeta" style="margin-bottom: 24px;">
+    <h2>Listar formularios por gRPC</h2>
+
+    <div class="fila-botones">
+      <button type="button" id="btnGrpcListar" class="boton boton-secundario">Ejecutar listado</button>
+    </div>
+
+    <div class="campo" style="margin-top: 16px;">
+      <label>Respuesta</label>
+      <div id="grpcTablaContainer" class="tabla-container">
+        <table class="tabla" id="grpcTabla">
+          <thead>
+          <tr>
+            <th>Encuestado</th>
+            <th>Sector</th>
+            <th>Nivel</th>
+            <th>Encuestador</th>
+            <th>Coordenadas</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colspan="5">Todavía no se ha ejecutado la consulta.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="tarjeta">
+    <h2>Crear formulario por gRPC</h2>
+
+    <form id="formGrpcCrear" class="formulario-simple">
+      <div class="fila-doble">
+        <div class="campo">
+          <label for="grpcNombre">Nombre</label>
+          <input type="text" id="grpcNombre" placeholder="Nombre completo" required>
+        </div>
+        <div class="campo">
+          <label for="grpcSector">Sector</label>
+          <input type="text" id="grpcSector" placeholder="Sector o barrio" required>
+        </div>
+      </div>
+
+      <div class="fila-doble">
+        <div class="campo">
+          <label for="grpcNivelEscolar">Nivel escolar</label>
+          <select id="grpcNivelEscolar" required>
+            <option value="">Seleccione</option>
+            <option>Básico</option>
+            <option>Medio</option>
+            <option>Grado Universitario</option>
+            <option>Postgrado</option>
+            <option>Doctorado</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="grpcUsername">Usuario encuestador</label>
+          <input type="text" id="grpcUsername" placeholder="Usuario que registra" required>
+        </div>
+      </div>
+
+      <div class="fila-doble">
+        <div class="campo">
+          <label for="grpcLatitud">Latitud</label>
+          <input type="text" id="grpcLatitud" placeholder="Ej. 19.45">
+        </div>
+        <div class="campo">
+          <label for="grpcLongitud">Longitud</label>
+          <input type="text" id="grpcLongitud" placeholder="Ej. -70.68">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="grpcFoto">Foto (opcional)</label>
+        <input type="file" id="grpcFoto" accept="image/*">
+      </div>
+
+      <div class="fila-botones">
+        <button type="submit" class="boton boton-principal">Crear formulario vía gRPC</button>
+      </div>
+    </form>
+
+    <div class="campo" style="margin-top: 16px;">
+      <label for="grpcRespuestaCrear">Respuesta del servidor</label>
+      <textarea id="grpcRespuestaCrear" rows="8" readonly placeholder="La respuesta del servidor aparecerá aquí"></textarea>
+    </div>
+  </section>
+</main>
+
+<script src="/js/grpc-client.js"></script>
 </body>
 </html>

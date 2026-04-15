@@ -1,10 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Cliente REST</title>
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
-<body>
-$END$
+<body class="layout-app">
+
+<div th:replace="~{sidebar :: sidebar('rest-client', ${username}, ${rol})}"></div>
+
+<main class="contenido-principal">
+    <div class="pagina-header">
+        <h1 th:text="${titulo}">Cliente REST</h1>
+    </div>
+
+    <section class="tarjeta" style="margin-bottom: 24px;">
+        <h2>Autenticación REST</h2>
+        <form id="formRestLogin" class="formulario-simple">
+            <div class="fila-doble">
+                <div class="campo">
+                    <label for="restUsername">Usuario</label>
+                    <input type="text" id="restUsername" placeholder="Digite el usuario" required>
+                </div>
+                <div class="campo">
+                    <label for="restPassword">Contraseña</label>
+                    <input type="password" id="restPassword" placeholder="Digite la contraseña" required>
+                </div>
+            </div>
+
+            <div class="fila-botones">
+                <button type="submit" class="boton boton-principal">Obtener token</button>
+            </div>
+        </form>
+
+        <div class="campo" style="margin-top: 16px;">
+            <label for="restToken">JWT actual</label>
+            <textarea id="restToken" rows="3" readonly placeholder="Aquí se mostrará el token"></textarea>
+        </div>
+
+        <div id="mensajeRestLogin" class="mensaje oculto"></div>
+    </section>
+
+    <section class="tarjeta" style="margin-bottom: 24px;">
+        <h2>Consultar formularios</h2>
+        <div class="fila-botones">
+            <button type="button" id="btnRestListar" class="boton boton-secundario">Listar formularios</button>
+        </div>
+
+        <div class="campo" style="margin-top: 16px;">
+            <label>Respuesta</label>
+            <div id="restTablaContainer" class="tabla-container">
+                <table class="tabla" id="restTabla">
+                    <thead>
+                    <tr>
+                        <th>Encuestado</th>
+                        <th>Sector</th>
+                        <th>Nivel</th>
+                        <th>Estado</th>
+                        <th>Coordenadas</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Crear formulario por REST</h2>
+        <form id="formRestCrear" class="formulario-simple">
+            <div class="fila-doble">
+                <div class="campo">
+                    <label for="restNombre">Nombre</label>
+                    <input type="text" id="restNombre" placeholder="Nombre completo" required>
+                </div>
+                <div class="campo">
+                    <label for="restSector">Sector</label>
+                    <input type="text" id="restSector" placeholder="Sector o barrio" required>
+                </div>
+            </div>
+
+            <div class="fila-doble">
+                <div class="campo">
+                    <label for="restNivelEscolar">Nivel escolar</label>
+                    <select id="restNivelEscolar" required>
+                        <option value="">Seleccione</option>
+                        <option>Básico</option>
+                        <option>Medio</option>
+                        <option>Grado Universitario</option>
+                        <option>Postgrado</option>
+                        <option>Doctorado</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="restFoto">Foto (opcional)</label>
+                    <input type="file" id="restFoto" accept="image/*">
+                </div>
+            </div>
+
+            <div class="fila-doble">
+                <div class="campo">
+                    <label for="restLatitud">Latitud</label>
+                    <input type="text" id="restLatitud" placeholder="Ej. 19.45">
+                </div>
+                <div class="campo">
+                    <label for="restLongitud">Longitud</label>
+                    <input type="text" id="restLongitud" placeholder="Ej. -70.68">
+                </div>
+            </div>
+
+            <div class="fila-botones">
+                <button type="submit" class="boton boton-principal">Crear formulario vía REST</button>
+            </div>
+        </form>
+
+        <div class="campo" style="margin-top: 16px;">
+            <label for="restRespuestaCrear">Respuesta del servidor</label>
+            <textarea id="restRespuestaCrear" rows="8" readonly placeholder="La respuesta del servidor aparecerá aquí"></textarea>
+        </div>
+    </section>
+</main>
+
+<script src="/js/rest-client.js"></script>
 </body>
 </html>
