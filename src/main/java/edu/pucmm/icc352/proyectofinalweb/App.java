@@ -46,6 +46,7 @@ public class App {
         new FormularioController(authService, formularioService).registrar(app);
         new AdminController(authService, usuarioRepository, formularioRepository).registrar(app);
         new DashboardController(formularioRepository).registrar(app);
+        new GrpcClientController(formularioService).registrar(app);
         new SyncWebSocket(authService, formularioService).registrar(app);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

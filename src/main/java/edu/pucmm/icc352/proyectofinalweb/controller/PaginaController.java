@@ -26,6 +26,8 @@ public class PaginaController {
         app.get("/encuesta", this::encuesta);
         app.get("/admin", this::admin);
         app.get("/mapa", this::mapa);
+        app.get("/rest-client", this::restClient);
+        app.get("/grpc-client", this::grpcClient);
     }
 
     private void inicio(Context ctx) {
@@ -111,4 +113,33 @@ public class PaginaController {
 
         ctx.html(VistaUtil.render("mapa.html", modelo));
     }
+
+    private void restClient(Context ctx) {
+        if (!SesionUtil.esAdmin(ctx)) {
+            ctx.redirect("/dashboard");
+            return;
+        }
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("titulo", "Cliente REST");
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", SesionUtil.rol(ctx).name());
+
+        ctx.html(VistaUtil.render("rest-client.html", modelo));
+    }
+
+    private void grpcClient(Context ctx) {
+        if (!SesionUtil.esAdmin(ctx)) {
+            ctx.redirect("/dashboard");
+            return;
+        }
+
+        Map<String, Object> modelo = new HashMap<>();
+        modelo.put("titulo", "Cliente gRPC");
+        modelo.put("username", SesionUtil.username(ctx));
+        modelo.put("rol", SesionUtil.rol(ctx).name());
+
+        ctx.html(VistaUtil.render("grpc-client.html", modelo));
+    }
 }
+

@@ -7,6 +7,7 @@ public class FormularioDto {
     private double latitud;
     private double longitud;
     private String fotoBase64;
+    private String username;
 
     public FormularioDto() {
     }
@@ -35,6 +36,8 @@ public class FormularioDto {
         return fotoBase64;
     }
 
+    public String getUsername() { return username; }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -58,4 +61,6 @@ public class FormularioDto {
     public void setFotoBase64(String fotoBase64) {
         this.fotoBase64 = fotoBase64;
     }
+
+    public void setUsername(String username) { this.username = username; }
 }
